@@ -130,8 +130,18 @@ function showNotification(message, type) {
     notification.textContent = message;
     notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg`;
     
-    // Level 5 Bug 1: Notification colors not applied based on type
-    // Bug: Type parameter is ignored, all notifications look the same
+    // Apply color based on type
+    if (type === 'success') {
+        notification.classList.add('bg-green-100', 'text-green-800');
+    } else if (type === 'reminder') {
+        notification.classList.add('bg-blue-100', 'text-blue-800');
+    } else if (type === 'info') {
+        notification.classList.add('bg-gray-100', 'text-gray-800');
+    } else if (type === 'error') {
+        notification.classList.add('bg-red-100', 'text-red-800');
+    } else {
+        notification.classList.add('bg-white', 'text-black');
+    }
     
     notification.classList.remove('hidden');
     
