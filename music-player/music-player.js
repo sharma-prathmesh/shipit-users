@@ -327,14 +327,16 @@ class MusicPlayer {
     }
 
     updatePlaylistHighlight() {
-        const playlistItems = this.playlist.children;
-        for (let i = 0; i < playlistItems.length; i++) {
-            // BUG LEVEL 4-1: Playlist highlight logic doesn't clear previous highlights
-            if (i === this.currentTrackIndex && this.isPlaying) {
-                playlistItems[i].classList.add('bg-white/20');
-            }
+    const playlistItems = this.playlist.children;
+    for (let i = 0; i < playlistItems.length; i++) {
+        // Always clear highlight first
+        playlistItems[i].classList.remove('bg-white/20');
+        // Add highlight only to the current track if playing
+        if (i === this.currentTrackIndex && this.isPlaying) {
+            playlistItems[i].classList.add('bg-white/20');
         }
     }
+}
 
     handleKeyboardShortcuts(e) {
         // BUG LEVEL 4-2: Keyboard shortcuts work even in text inputs
