@@ -99,6 +99,31 @@ function getWeather() {
         });
 }
 // Level 4 Bug 2: Icons may not match weather condition: icon fetch not validated
+then((data) => {
+    if (!data || !data.current) {
+        throw new Error("Invalid data received");
+    }
+
+    const temp = data.current.temp_c;
+    const desc = data.current.condition.text;
+    let icon = data.current.condition.icon;
+
+    // Validate icon URL
+    if (typeof icon !== "string" || !icon.match(/^\/\/cdn\.weatherapi\.com\/weather\/64x64\/.*\.png$/)) {
+        icon = "//cdn.weatherapi.com/weather/64x64/day/113.png"; // fallback: clear day icon
+    }
+    icon = "https:" + icon; // prepend protocol
+
+    weatherDisplay.innerHTML = `
+        <div class="flex flex-col items-center">
+            <img src="${icon}" alt="weather icon" class="mb-2">
+            <span class="text-xl font-bold">${temp} °C</span>
+            <span class="capitalize">${desc}</span>
+            <span class="text-gray-600 text-sm">${data.location.name}, ${data.location.country}</span>
+        </div>
+    `;
+    errorDisplay.textContent = "";
+})
 
 // Level 5 Bug 1: No debounce for search; repeated clicks can flood API
 // Debounce utility function
