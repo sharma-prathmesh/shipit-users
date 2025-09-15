@@ -7,6 +7,11 @@ let waterLog = [];
 
 // Level 1 Bug 1: Missing initialization on page load
 // Page loads with empty progress, should show initial state
+window.onload = function () {
+    updateProgress();
+    updateWaterLog();
+    document.getElementById('reminder-status').textContent = 'No reminder set';
+};
 
 // Level 1 Bug 2: Goal input doesn't validate properly
 function setGoal() {
