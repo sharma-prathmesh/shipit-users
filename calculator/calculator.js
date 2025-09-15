@@ -204,8 +204,9 @@ function memoryAdd() {
     } else {
         memory += parseFloat(display.value);
     }
-    // Bug: No check for memory overflow (very large numbers)
-    // Should limit memory to reasonable bounds
+    // Limit memory to reasonable bounds
+    if (memory > 1e12) memory = 1e12;
+    if (memory < -1e12) memory = -1e12;
 }
 
 // Initialize calculator on page load
