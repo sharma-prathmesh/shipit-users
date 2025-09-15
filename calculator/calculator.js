@@ -129,7 +129,6 @@ function memoryAdd() {
     }
 }
 
-// Bug Level 4 - Issue 1: Multiple decimal points allowed
 function appendToDisplay(value) {
     if (isNewCalculation && !isOperator(value)) {
         currentInput = '';
@@ -148,7 +147,10 @@ function appendToDisplay(value) {
             currentInput = '';
         }
     } else {
-        // Bug: No check for multiple decimal points
+        // Fix: Prevent multiple decimal points
+        if (value === '.' && currentInput.includes('.')) {
+            return;
+        }
         currentInput += value;
     }
     
