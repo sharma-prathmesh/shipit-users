@@ -93,8 +93,10 @@ function setReminder() {
     const minutes = parseInt(intervalInput.value);
     
     if (minutes) {
-        // Level 4 Bug 2: Multiple timers can be set without clearing previous ones
-        // Bug: Doesn't clear existing timer before setting new one
+        // Clear previous timer before setting a new one
+        if (reminderTimer) {
+            clearInterval(reminderTimer);
+        }
         reminderInterval = minutes;
         reminderTimer = setInterval(() => {
             showNotification('Time to drink water! 💧', 'reminder');
