@@ -79,9 +79,12 @@ function updateWaterLog() {
 }
 
 function removeLogEntry(index) {
-    // Level 4 Bug 1: Removing entry doesn't update total intake
-    // Bug: Only removes from log but doesn't subtract from currentIntake
+    // Subtract the removed entry's amount from currentIntake
+    if (waterLog[index]) {
+        currentIntake -= waterLog[index].amount;
+    }
     waterLog.splice(index, 1);
+    updateProgress();
     updateWaterLog();
 }
 
