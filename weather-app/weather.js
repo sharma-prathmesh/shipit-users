@@ -74,3 +74,48 @@ document.getElementById("city-input").addEventListener("keydown", (e) => {
     if (e.key === "Enter") debouncedGetWeather();
 });
 // Level 5 Bug 2: No input validation (numbers, script, non-city input allowed)
+function getWeather() {
+    const city = document.getElementById("city-input").value.trim();
+    // Validate: only letters, spaces, and hyphens allowed
+    if (!city || !/^[a-zA-Z\s\-]+$/.test(city)) {
+        errorDisplay.textContent = "Please enter a valid city name (letters only).";
+        weatherDisplay.innerHTML = "";
+        return;
+    }
+
+    errorDisplay.textContent = "";
+    weatherDisplay.innerHTML = "Loading...";
+
+    fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error ${response.status}`);
+            }
+            return response.json();
+        })
+        .then((data) => {
+            if (!data || !data.current) {
+                throw new Error("Invalid data received");
+            }
+
+            // Correct fields for WeatherAPI
+            const temp = data.current.temp_c;
+            const desc = data.current.condition.text;
+            const icon = "https:" + data.current.condition.icon; // prepend protocol
+
+            weatherDisplay.innerHTML = `
+                <div class="flex flex-col items-center">
+                    <img src="${icon}" alt="weather icon" class="mb-2">
+                    <span class="text-xl font-bold">${temp} °C</span>
+                    <span class="capitalize">${desc}</span>
+                    <span class="text-gray-600 text-sm">${data.location.name}, ${data.location.country}</span>
+                </div>
+            `;
+            errorDisplay.textContent = "";
+        })
+        .catch((err) => {
+            // More descriptive error handling
+            errorDisplay.textContent = `Error: ${err.message}`;
+            weatherDisplay.innerHTML = "";
+        });
+}
