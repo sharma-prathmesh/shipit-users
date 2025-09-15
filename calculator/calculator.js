@@ -192,7 +192,7 @@ function calculate() {
     // Bug: Chain calculations reset previousInput incorrectly
     currentInput = result.toString();
     operator = '';
-    previousInput = ''; // Should keep result for chaining
+    previousInput = currentInput; // Keep result for chaining
     isNewCalculation = true;
     updateDisplay();
 }
