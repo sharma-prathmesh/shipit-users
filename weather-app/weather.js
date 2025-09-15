@@ -22,7 +22,7 @@ function getWeather() {
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`HTTP error ${response.status}`);
-            }
+            }3
             return response.json();
         })
         .then((data) => {
@@ -56,4 +56,21 @@ function getWeather() {
 // Level 4 Bug 2: Icons may not match weather condition: icon fetch not validated
 
 // Level 5 Bug 1: No debounce for search; repeated clicks can flood API
+// Debounce utility function
+function debounce(fn, delay) {
+    let timeoutId;
+    return function(...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => fn.apply(this, args), delay);
+    };
+}
+
+// Use debounced getWeather
+const debouncedGetWeather = debounce(getWeather, 500);
+
+// Example: Attach to search button and input
+document.getElementById("search-btn").addEventListener("click", debouncedGetWeather);
+document.getElementById("city-input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") debouncedGetWeather();
+});
 // Level 5 Bug 2: No input validation (numbers, script, non-city input allowed)
