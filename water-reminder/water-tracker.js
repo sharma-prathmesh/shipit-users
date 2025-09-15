@@ -125,6 +125,8 @@ function resetDaily() {
     showNotification('Daily progress reset', 'info');
 }
 
+let notificationTimeout; // Add this at the top with other globals
+
 function showNotification(message, type) {
     const notification = document.getElementById('notification');
     notification.textContent = message;
@@ -144,9 +146,14 @@ function showNotification(message, type) {
     }
     
     notification.classList.remove('hidden');
-    
-    // Level 5 Bug 2: Notifications don't auto-dismiss and can stack
-    // Bug: No timeout to hide notification, and multiple notifications overlap
+
+    // Auto-dismiss after 3 seconds, clear previous timeout
+    if (notificationTimeout) {
+        clearTimeout(notificationTimeout);
+    }
+    notificationTimeout = setTimeout(() => {
+        notification.classList.add('hidden');
+    }, 3000);
 }
 
 // Missing initialization - Level 1 Bug 1
